@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+    Copyright (c) 2019 MIST Lab, Wayne State University
+   
+     This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+   
+    Contributors:
+        MIST Lab
+ -->
+
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="JEPO"
+            id="com.mist.jepo">
+      </category>
+      <view
+            name="JEPO"
+            icon="icons/jepo.png"
+            category="com.mist.jepo"
+            class="com.mist.jepo.JEPOView"
+            id="com.mist.jepo.JEPOView">
+      </view>
+   </extension>
+   <extension point="org.eclipse.ui.menus">
+  <menuContribution
+        locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+        <menu
+        	id="JEPOMenu"
+        	label="JEPO">
+     <command
+           commandId="com.mist.jepo.JEP"
+           icon="icons/jepo.png"
+           label="Run Profiler"
+           style="push">
+     </command>
+     <command
+           commandId="com.mist.jepo.JEOAll"
+           icon="icons/jepo.png"
+           label="Run Optimizer"
+           style="push">
+     </command>
+     </menu>
+  </menuContribution>
+  <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="com.mist.jepo.JEO">
+            <command
+                  id="com.mist.jepo.JEO"
+                  commandId="com.mist.jepo.JEO"
+                  icon="icons/jepo.png"
+                  tooltip="Open JEPO optimizer">
+            </command>
+         </toolbar>
+  </menuContribution>
+  
+</extension>
+   <extension
+         point="org.eclipse.ui.commands">
+         <category
+            name="com.mist.jepo.JEP"
+            id="com.mist.jepo.JEP">
+      </category>
+      <command
+           categoryId="com.mist.jepo.JEP"
+           id="com.mist.jepo.JEP"
+           name="JEPO">
+     </command>
+     <category
+            name="com.mist.jepo.JEO"
+            id="com.mist.jepo.JEO">
+      </category>
+      <command
+           categoryId="com.mist.jepo.JEO"
+           id="com.mist.jepo.JEO"
+           name="JEPO">
+     </command>
+     <category
+            name="com.mist.jepo.JEOAll"
+            id="com.mist.jepo.JEOAll">
+      </category>
+      <command
+           categoryId="com.mist.jepo.JEOAll"
+           id="com.mist.jepo.JEOAll"
+           name="JEPO">
+     </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+      		class="com.mist.jepo.JEP"
+            commandId="com.mist.jepo.JEP">
+      </handler>
+      <handler
+      		class="com.mist.jepo.JEO"
+            commandId="com.mist.jepo.JEO">
+      </handler>
+      <handler
+      		class="com.mist.jepo.JEOAll"
+            commandId="com.mist.jepo.JEOAll">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+         <key
+         commandId="com.mist.jepo.JEP"
+         sequence="M1+J"
+         contextId="org.eclipse.jdt.ui.javaEditorScope"
+         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+         <key
+         commandId="com.mist.jepo.JEO"
+         sequence="M1+J"
+         contextId="org.eclipse.jdt.ui.javaEditorScope"
+         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+         <key
+         commandId="com.mist.jepo.JEOAll"
+         sequence="M1+J"
+         contextId="org.eclipse.jdt.ui.javaEditorScope"
+         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   </extension>
+
+
+</plugin>
