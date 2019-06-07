@@ -8,7 +8,7 @@ Java Energy Profiler &amp; Optimizer is an eclipse plugin that provides method e
 
 ## How to use?
 - **Real-time energy-saving suggestions**
-  - Click JEPO icon located in Eclipse tool-bar menu
+  - Click ![JEPO](/icons/jepo.png) icon located in Eclipse tool-bar menu
 - **Energy-saving suggestions for a project**
   - Right-click on a project
   - Select JEPO -> Run Optimizer option
