@@ -192,14 +192,17 @@ public class JEPOView extends ViewPart {
 		String res = "";
 
 		if (msg.contains(" double ") || msg.contains(" byte ") || msg.contains(" short ") || msg.contains(" float ")
-				|| msg.contains(" char ") || msg.contains("\tdouble ") || msg.contains("\tbyte ")
-				|| msg.contains("\tshort ") || msg.contains("\tfloat ") || msg.contains("\tchar ")) {
-			res += "int is the most energy efficient primitive data type. Replace if possible. ";
+				|| msg.contains(" char ") || msg.contains(" long ") || msg.contains("\tdouble ")
+				|| msg.contains("\tbyte ") || msg.contains("\tshort ") || msg.contains("\tfloat ")
+				|| msg.contains("\tchar ") || msg.contains("\tlong ")) {
+			if (isValid(msg))
+				res += "int is the most energy efficient primitive data type. Replace if possible. ";
 		}
 
 		if (msg.contains(" double ") || msg.contains(" float ") || msg.contains("\tdouble ")
 				|| msg.contains("\tfloat ")) {
-			res += "Scientific notation results in lower energy consumption of decimal numbers. ";
+			if (isValid(msg))
+				res += "Scientific notation results in lower energy consumption of decimal numbers. ";
 		}
 
 		if (msg.contains(" Double ") || msg.contains(" Byte ") || msg.contains(" Short ") || msg.contains(" Float ")
@@ -207,11 +210,13 @@ public class JEPOView extends ViewPart {
 				|| msg.contains("\tDouble ") || msg.contains("\tByte ") || msg.contains("\tShort ")
 				|| msg.contains("\tFloat ") || msg.contains("\tCharacter ") || msg.contains("\tInteger ")
 				|| msg.contains("\tLong ")) {
-			res += "Integer Wrapper class object is the most energy efficient. Replace if possible. ";
+			if (isValid(msg))
+				res += "Integer Wrapper class object is the most energy efficient. Replace if possible. ";
 		}
 
-		if (msg.matches(".*static.*=.*;") && !msg.contains(" main(")) {
-			res += "static keyword consumes up to 17,700% more energy. Avoid if possible. ";
+		if (msg.matches(".*static.*=.*;") && !msg.contains("(")) {
+			if (isValid(msg))
+				res += "static keyword consumes up to 17,700% more energy. Avoid if possible. ";
 		}
 
 		if (msg.matches(".*\\d+%\\d+.*")) {
@@ -243,6 +248,50 @@ public class JEPOView extends ViewPart {
 		}
 
 		return res;
+	}
+
+	/*
+	 * Check size of variables to provide valid suggestions
+	 */
+	public static boolean isValid(String str) {
+
+		int end = str.indexOf(";");
+
+		if (end >= 0) {
+
+			String[] values = str.substring(0, end).trim().split(",");
+
+			for (String val : values) {
+
+				if (val.contains("=")) {
+
+					val = val.substring(val.indexOf("=") + 1);
+
+					if (!val.isEmpty()) {
+
+						try {
+
+							if (val.contains("\'") && val.charAt(val.indexOf("\'") + 1) > 100000) {
+								return true;
+							} else if (val.contains(".") && Double.parseDouble(val) > 100000.00) {
+								return true;
+							} else if (Long.parseLong(val) > 100000) {
+								return true;
+							}
+
+						} catch (NumberFormatException e) {
+
+							System.out.println("Variables can't be parsed. Initialize variables correctly.");
+
+						}
+					}
+				}
+
+			}
+		}
+
+		return false;
+
 	}
 
 	/*
