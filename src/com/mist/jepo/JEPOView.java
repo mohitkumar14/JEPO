@@ -191,6 +191,9 @@ public class JEPOView extends ViewPart {
 
 		String res = "";
 
+		if (msg.trim().startsWith("//") || msg.trim().startsWith("*") || msg.trim().startsWith("/*"))
+			return res;
+
 		if (msg.contains(" double ") || msg.contains(" byte ") || msg.contains(" short ") || msg.contains(" float ")
 				|| msg.contains(" char ") || msg.contains(" long ") || msg.contains("\tdouble ")
 				|| msg.contains("\tbyte ") || msg.contains("\tshort ") || msg.contains("\tfloat ")
