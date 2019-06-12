@@ -48,6 +48,7 @@ import org.eclipse.ui.PlatformUI;
 public class JEP extends AbstractHandler implements IJavaLaunchConfigurationConstants {
 
 	protected static boolean JEPEnabled = false;
+	protected static boolean JEPPopUpEnabled = true;
 	private String mainClass = "", JEPOClass = "";
 
 	/*
@@ -305,5 +306,13 @@ public class JEP extends AbstractHandler implements IJavaLaunchConfigurationCons
 		PlatformUI.getWorkbench().saveAllEditors(true);
 
 	}
+	
+	/*
+	 * Enable Java profiler for only Linux OS
+	 */	@Override
+    public boolean isEnabled() {
+        // TODO Auto-generated method stub
+        return System.getProperty("os.name").toLowerCase().contains("linux");
+    }
 
 }
