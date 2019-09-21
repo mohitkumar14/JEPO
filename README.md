@@ -14,7 +14,8 @@ Java Energy Profiler &amp; Optimizer is an eclipse plugin that provides method e
   - Right-click on a project
   - Select JEPO -> Run Optimizer option
 - **Energy profiling of methods in a project**
-  - Right-click on a project
+  - Add all libraries in lib folder above to project build path
+  - Right-click on the project
   - Select JEPO -> Run Profiler option
 
 ## Suggestions
