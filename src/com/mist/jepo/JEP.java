@@ -12,7 +12,6 @@
 
 package com.mist.jepo;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -21,8 +20,6 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -36,7 +33,6 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.viewers.ISelection;
@@ -85,15 +81,10 @@ public class JEP extends AbstractHandler implements IJavaLaunchConfigurationCons
 
 					findMainClass(jProject);
 
-					String projectPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-
-					if (!containLibrary(jProject, "javassist.jar"))
-						addLibrary(jProject, new Path(projectPath + "lib/javassist.jar"));
-					if (!containLibrary(jProject, "CP.jar"))
-						addLibrary(jProject, new Path(projectPath + "lib/CP.jar"));
-					if (!containLibrary(jProject, "guava-23.0.jar"))
-						addLibrary(jProject, new Path(projectPath + "lib/guava-23.0.jar"));
-
+					if (!containLibrary(jProject, "javassist.jar") || !containLibrary(jProject, "CP.jar")
+							|| !containLibrary(jProject, "guava-23.0.jar"))
+						System.out.println(
+								"Missing library!!! Add javassist.jar, CP.jar, and guava-23.0.jar to build path");
 					addEnergyCode(jProject);
 
 					ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
@@ -108,11 +99,7 @@ public class JEP extends AbstractHandler implements IJavaLaunchConfigurationCons
 					ILaunchConfiguration config = wc.doSave();
 					config.launch(ILaunchManager.RUN_MODE, null);
 
-					// removeLibrary(jProject);
 				} catch (CoreException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -138,20 +125,6 @@ public class JEP extends AbstractHandler implements IJavaLaunchConfigurationCons
 
 		}
 		return false;
-	}
-
-	/*
-	 * Add required library in selected project
-	 */
-	private void addLibrary(IJavaProject jProject, IPath jarPath) throws CoreException, FileNotFoundException {
-
-		IClasspathEntry javaEntry = JavaCore.newLibraryEntry(jarPath, null, null);
-		IClasspathEntry[] oldEntries = jProject.getRawClasspath();
-		IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
-		System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
-		newEntries[oldEntries.length] = javaEntry;
-		jProject.setRawClasspath(newEntries, null);
-
 	}
 
 	/*
@@ -306,13 +279,13 @@ public class JEP extends AbstractHandler implements IJavaLaunchConfigurationCons
 		PlatformUI.getWorkbench().saveAllEditors(true);
 
 	}
-	
+
 	/*
 	 * Enable Java profiler for only Linux OS
-	 */	@Override
-    public boolean isEnabled() {
-        // TODO Auto-generated method stub
-        return System.getProperty("os.name").toLowerCase().contains("linux");
-    }
+	 */ @Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return System.getProperty("os.name").toLowerCase().contains("linux");
+	}
 
 }

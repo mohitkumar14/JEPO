@@ -196,18 +196,18 @@ public class JEPOView extends ViewPart {
 
 		if (msg.trim().startsWith("//") || msg.trim().startsWith("*") || msg.trim().startsWith("/*"))
 			return res;
-
+		//(double v), float vs int suggestion,float[][]
 		if (msg.contains(" double ") || msg.contains(" byte ") || msg.contains(" short ") || msg.contains(" float ")
 				|| msg.contains(" char ") || msg.contains(" long ") || msg.contains("\tdouble ")
 				|| msg.contains("\tbyte ") || msg.contains("\tshort ") || msg.contains("\tfloat ")
 				|| msg.contains("\tchar ") || msg.contains("\tlong ")) {
-			if (isValid(msg))
+			//if (isValid(msg))
 				res += "int is the most energy efficient primitive data type. Replace if possible. ";
 		}
 
 		if (msg.contains(" double ") || msg.contains(" float ") || msg.contains("\tdouble ")
 				|| msg.contains("\tfloat ")) {
-			if (isValid(msg))
+			//if (isValid(msg))
 				res += "Scientific notation results in lower energy consumption of decimal numbers. ";
 		}
 
@@ -216,12 +216,12 @@ public class JEPOView extends ViewPart {
 				|| msg.contains("\tDouble ") || msg.contains("\tByte ") || msg.contains("\tShort ")
 				|| msg.contains("\tFloat ") || msg.contains("\tCharacter ") || msg.contains("\tInteger ")
 				|| msg.contains("\tLong ")) {
-			if (isValid(msg))
+			//if (isValid(msg))
 				res += "Integer Wrapper class object is the most energy efficient. Replace if possible. ";
 		}
 
 		if (msg.matches(".*static.*=.*;") && !msg.contains("(")) {
-			if (isValid(msg))
+			//if (isValid(msg))
 				res += "static keyword consumes up to 17,700% more energy. Avoid if possible. ";
 		}
 
@@ -229,6 +229,7 @@ public class JEPOView extends ViewPart {
 			res += "Modulus arithmetic operator consumes up to 1,620% more energy than other arithmetic operators. ";
 		}
 
+		//confOpen = "    <conf:(";
 		if (msg.matches(".*=.*?.*:.*;")) {
 			res += "Ternary operator consume up to 37% more energy than if-then-else statement. ";
 		}
@@ -237,6 +238,7 @@ public class JEPOView extends ViewPart {
 			res += "Put most common case first for lower energy consumption. ";
 		}
 
+		//multiple concantenation operator
 		if (msg.matches(".*\"[ ]*\\+[ ]*\".*") || msg.matches(".*\"[ ]*\\+.*") || msg.matches(".*\\+[ ]*\".*")) {
 			res += "StringBuilder append method consumes much lower energy than String concatenation operator. ";
 		}
