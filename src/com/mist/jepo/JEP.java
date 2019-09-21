@@ -79,25 +79,27 @@ public class JEP extends AbstractHandler implements IJavaLaunchConfigurationCons
 
 				try {
 
-					findMainClass(jProject);
-
 					if (!containLibrary(jProject, "javassist.jar") || !containLibrary(jProject, "CP.jar")
-							|| !containLibrary(jProject, "guava-23.0.jar"))
-						System.out.println(
+							|| !containLibrary(jProject, "guava-23.0.jar")) {
+						JOptionPane.showMessageDialog(null,
 								"Missing library!!! Add javassist.jar, CP.jar, and guava-23.0.jar to build path");
-					addEnergyCode(jProject);
+					} else {
 
-					ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-					ILaunchConfigurationType type = manager
-							.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
-					ILaunchConfigurationWorkingCopy wc;
+						findMainClass(jProject);
+						addEnergyCode(jProject);
 
-					wc = type.newInstance(null, "JEPO");
+						ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+						ILaunchConfigurationType type = manager
+								.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
+						ILaunchConfigurationWorkingCopy wc;
 
-					wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, jProject.getElementName());
-					wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, JEPOClass);
-					ILaunchConfiguration config = wc.doSave();
-					config.launch(ILaunchManager.RUN_MODE, null);
+						wc = type.newInstance(null, "JEPO");
+
+						wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, jProject.getElementName());
+						wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, JEPOClass);
+						ILaunchConfiguration config = wc.doSave();
+						config.launch(ILaunchManager.RUN_MODE, null);
+					}
 
 				} catch (CoreException e) {
 					// TODO Auto-generated catch block
